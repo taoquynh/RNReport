@@ -1,31 +1,26 @@
 import { Result, User } from "../models/User";
 import * as APIName from "./APIName";
 
-export async function apiManagerLogin(phone:string, password: String) {
-    console.log('INFO: ', phone, password)
-    const response = await fetch(
-        APIName.returnUrl(APIName.login), {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                PhoneNumber: "0168326697",
-                Password: "123456"
-            })
-        }
-    )
+export async function apiManagerLogin(phone: string, password: string) {
+  
+  const formData = new FormData();
+  formData.append("PhoneNumber", phone);
+  formData.append("Password", password);
 
-    const data = await response.json();
-    // const newData: Result = JSON.parse(data);
+  const response = await fetch(APIName.returnUrl(APIName.login), {
+    method: "POST",
+    body: formData,
+  });
 
-    console.log(response.url)
-    console.log(response.status)
-    console.log(data)
-    // if (newData.code === 0) {
-    //     console.log("TOKEN: ", newData.data.token)
-    // } else {
-    //     console.log("Error: ", newData.message)
-    // }
+  const data = await response.json();
+
+  if (response.status == 200) {
+    if (data.code === 0) {
+        console.log("TOKEN: ", data.data.token)
+    } else {
+        console.log("Error: ", data.message)
+    }
+  } else {
+    console.log("Error: ", response.status)
+  }
 }
