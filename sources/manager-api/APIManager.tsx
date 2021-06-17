@@ -14,13 +14,5 @@ export async function apiManagerLogin(phone: string, password: string) {
 
   const data = await response.json();
 
-  if (response.status == 200) {
-    if (data.code === 0) {
-        console.log("TOKEN: ", data.data.token)
-    } else {
-        console.log("Error: ", data.message)
-    }
-  } else {
-    console.log("Error: ", response.status)
-  }
+  return data
 }

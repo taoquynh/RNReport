@@ -2,7 +2,15 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../models/User";
 import { LOGIN } from "../actions/type";
 
-const initState: User = {
+const initState = {
+  
+}
+const loginFalse = (state = initState, action: PayloadAction<string>) => ({
+  ...state,
+  error: action.payload,
+})
+
+const initUser: User = {
   id: '',
   createdAt: '',
   createdBy: '',
@@ -17,8 +25,10 @@ const initState: User = {
   avatar: '',
   token: '',
 }
-const authReducer = (state = initState, action: PayloadAction<{phone: string, password: string}, string>) => {
-  return state
-};
 
-export default authReducer;
+const getUser = (state = initUser, action: User) => ({
+  ...state,
+  user: action
+})
+
+export default loginFalse;

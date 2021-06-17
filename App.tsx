@@ -9,16 +9,16 @@ import Issue from "./sources/controllers/Issue";
 import DrawerContent from "./sources/components/DrawerContent";
 import { Provider } from "react-redux";
 import store from "./sources/reduxs/store";
-
+import {navigationRef} from './sources/navigators/navigationService'
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
       <Drawer.Navigator
-        initialRouteName="Login"
+        initialRouteName="Issue"
         drawerContent={() => <DrawerContent />}
       >
         <Stack.Screen

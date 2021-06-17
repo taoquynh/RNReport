@@ -1,12 +1,18 @@
-import {LOGIN, REGISTER} from './type';
+import { User } from '../../models/User';
+import {GET_USER, LOGIN, LOGIN_FALSE, REGISTER} from './type';
 
-export const login = (phone: string, password: string) => ({
+export const loginAction = (phone: string, password: string) => ({
     type: LOGIN,
     payload: {
         phone,
         password
     }
 })
+
+// export const loginFalse = (error: string) => ({
+//     type: LOGIN_FALSE,
+//     payload: error
+// })
 
 export const register = (username: string, phone: string, password: string) => ({
     type: REGISTER,
@@ -15,4 +21,9 @@ export const register = (username: string, phone: string, password: string) => (
         phone,
         password
     }
+})
+
+export const getProfile = (user: User) => ({
+    type: GET_USER,
+    payload: user,
 })
