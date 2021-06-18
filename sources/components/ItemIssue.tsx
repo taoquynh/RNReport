@@ -1,66 +1,113 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { MAIN_COLOR } from "../constants";
+import { returnUrlImage } from "../manager-apis/APIName";
+import { Issue } from "../models/Issue";
 
-const images = [
-  { id: 1, source: require("../../assets/anh1.jpeg") },
-  { id: 1, source: require("../../assets/anh2.jpeg") },
-  { id: 1, source: require("../../assets/anh3.jpeg") },
-  { id: 1, source: require("../../assets/anh4.jpeg") },
-];
+// const images = [
+//   { id: 1, source: require("../../assets/anh1.jpeg") },
+//   { id: 1, source: require("../../assets/anh2.jpeg") },
+//   { id: 1, source: require("../../assets/anh3.jpeg") },
+//   { id: 1, source: require("../../assets/anh4.jpeg") },
+// ];
 const WIDTH = Dimensions.get("window").width - 40;
 const numCol = 2;
 const WIDTH_LIST = WIDTH - 40;
 
-const ItemIssue = () => {
+interface Status {
+  text: string;
+  color: string;
+}
+
+const statuses = [
+  {
+    text: "Đang chờ",
+    color: "orange",
+  },
+  {
+    text: "Đang xử lý",
+    color: "orange",
+  },
+  {
+    text: "Đã xong",
+    color: "green",
+  },
+  {
+    text: "Huỷ bỏ",
+    color: "gray",
+  },
+  {
+    text: "Không duyệt",
+    color: "red",
+  },
+];
+
+const ItemIssue = (item: Issue, index: number) => {
+  const user = item.accountPublic;
+  const images = item.photos;
+  // const [status, setStatus] = useState<Status>();
+
   return (
     <View style={styles.container}>
       <View style={styles.topView}>
         <View style={[styles.chiaDoi, styles.topLeft]}>
           <Image
             style={styles.photo}
-            source={require("../../assets/pikachu.jpg")}
+            // source={require("../../assets/pikachu.jpg")}
+            source={
+              user.avatar === null
+                ? require("../../assets/pikachu.jpg")
+                : { uri: returnUrlImage(user.avatar) }
+            }
           />
           <View>
-            <Text>Hieu Tao</Text>
+            <Text>{user.name}</Text>
             <Text>20/09/2020</Text>
           </View>
         </View>
         <View style={[styles.chiaDoi, styles.topRight]}>
-          <Text style={styles.statusLabel}>Không duyệt</Text>
+          <Text style={[styles.statusLabel, { color: statuses[item.status].color}]}>
+            {statuses[item.status].text}
+            {/* Đang chờ */}
+          </Text>
         </View>
       </View>
       <View style={styles.lineView}></View>
       <View style={styles.bottomView}>
-        <Text>Hầm B2 bị ngập nước</Text>
-        <Text>
-          Tôi gửi xe ô tô tại hầm chung cư và có ký hợp đồng với ban quản lý
-          chung cư. Do mưa lớn, nước mưa tràn vào hầm khiến xe của tôi bị ngập
-          và hư hỏng nặng. Trong trường hợp này tôi có được bồi thường không?
-        </Text>
-        <FlatList
-          data={images}
-          keyExtractor={(item, index) => `${index}`}
-          numColumns={numCol}
-          renderItem={({ item, index }) => (
-            <Image
-              style={{
-                // borderRadius: 10,
-                width: WIDTH_LIST / numCol,
-                height:
-                  (Image.resolveAssetSource(item.source).height * (WIDTH_LIST / numCol)) / Image.resolveAssetSource(item.source).width,
-                backgroundColor: "white",
-                margin: 2,
-              }}
-              source={item.source}
-              resizeMode="cover"
-            />
-          )}
-        />
+        <Text style={styles.title}>{item.title}</Text>
+        <Text>{item.content}</Text>
+        {images.length > 0 ? (
+          <FlatList
+            data={images}
+            keyExtractor={(item, index) => `${index}`}
+            numColumns={images.length === 1 ? 1 : 2}
+            style={styles.listImages}
+            renderItem={({ item, index }) => (
+              <Image
+                style={{
+                  width: WIDTH_LIST / (images.length === 1 ? 1 : 2),
+                  height: images.length === 1 ? 200 : 100,
+                  backgroundColor: "red",
+                  margin: 2,
+                }}
+                // source={item.source}
+                source={{ uri: returnUrlImage(item) }}
+                // source={require("../../assets/pikachu.jpg")}
+                resizeMode="cover"
+              />
+            )}
+          />
+        ) : (
+          <EmptyList></EmptyList>
+        )}
       </View>
     </View>
   );
+};
+
+const EmptyList = () => {
+  return <View></View>;
 };
 
 const styles = StyleSheet.create({
@@ -102,9 +149,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
+    marginBottom: 8,
   },
   statusLabel: {
-    color: "red",
+    // color: "gray",
   },
   chiaDoi: {
     width: "50%",
@@ -119,6 +167,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-end",
+  },
+  listImages: {
+    marginTop: 10,
   },
 });
 

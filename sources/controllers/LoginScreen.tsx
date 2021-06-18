@@ -13,7 +13,7 @@ import layouts from "./styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ParamListBase } from "@react-navigation/routers";
 import { useDispatch } from "react-redux";
-import { loginAction } from '../reduxs/actions';
+import { loginAction } from "../reduxs/actions";
 
 interface LoginProps {
   navigation: StackNavigationProp<ParamListBase, "Login">;
@@ -64,9 +64,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
           <TouchableOpacity
             style={[layouts.mainButton]}
             onPress={() => {
-              // apiManagerLogin(phone, password);
-              dispatch(loginAction(phone, password))
-              // navigation.navigate("Issue");
+              dispatch(loginAction(phone, password));
             }}
           >
             <Text style={[layouts.titleButton, { color: "#fff" }]}>

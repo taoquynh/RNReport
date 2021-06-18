@@ -1,6 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../models/User";
-import { LOGIN } from "../actions/type";
+import { LOGIN } from "../actions/types";
 
 const initState = {
   
@@ -11,7 +11,7 @@ const loginFalse = (state = initState, action: PayloadAction<string>) => ({
 })
 
 const initUser: User = {
-  id: '',
+  id: 0,
   createdAt: '',
   createdBy: '',
   modifiedAt: '',

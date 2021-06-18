@@ -1,23 +1,22 @@
 interface User {
-  id: string;
+  id: number;
   createdAt: string;
   createdBy: string;
   modifiedAt: string;
-  modifiedBy: string;
+  modifiedBy: string | null;
   name: string;
   dateOfBirth: string;
   address: string;
   gender: boolean;
   phoneNumber: string;
   email: string;
-  avatar: string;
+  avatar: string | null;
   token: string;
 }
 
-interface Result {
-  code: number;
-  message: string;
-  data: User;
+interface AccountPublic {
+  id: number;
+  name: string;
+  avatar: string;
 }
-
-export { User, Result };
+export { User, AccountPublic };
